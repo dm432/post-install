@@ -10,9 +10,18 @@
 
 
 
+# -------------------- make temp directory --------------------
+TEMP_DIR=$(mktemp -d)
+
+
+
 # -------------------- system upgrade --------------------
 sudo apt update
 sudo apt upgrade -y
+
+# Install snap and refresh packages
+sudo apt install -y snap
+sudo snap refresh
 
 
 
@@ -34,6 +43,11 @@ echo \
   "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
   "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# google cloud
+curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
 # update package index
 sudo apt-get update
 
@@ -41,10 +55,8 @@ sudo apt-get update
 
 # -------------------- dotfiles --------------------
 # copy dotfiles from git repo to the home dir
-TEMP_DIR=$(mktemp -d)
 git clone "https://github.com/dm432/post-install.git" "$TEMP_DIR"
 cp -rf "$TEMP_DIR/dotfiles/." "$HOME"
-rm -rf "$TEMP_DIR"
 
 
 
@@ -94,10 +106,23 @@ curl -L https://raw.githubusercontent.com/dm432/vim/main/install.sh | bash
 # docker
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# install snap, firefox and refresh snap packages
-sudo apt install -y snap
+# minikube
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 --output-dir "$TEMP_DIR"
+sudo install "$TEMP_DIR/minikube-linux-amd64" /usr/local/bin/minikube
+
+# kubectl
+sudo apt-get install -y kubectl
+
+# k9s
+sudo curl -sL https://github.com/derailed/k9s/releases/latest/download/k9s_Linux_amd64.tar.gz | sudo tar xzf - -C /usr/local/bin k9s
+
+# firefox 
 sudo snap install firefox
-sudo snap refresh
+
+
+
+# -------------------- remove temp directory --------------------
+rm -rf "$TEMP_DIR"
 
 
 
