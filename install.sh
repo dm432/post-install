@@ -17,10 +17,25 @@ sudo apt upgrade -y
 
 
 # -------------------- required tools to run this script --------------------
-# install git, curl and vim 
 sudo apt install -y curl
 sudo apt install -y wget
 sudo apt install -y git
+sudo apt install -y ca-certificates
+sudo apt install -y gnupg 
+
+
+
+# -------------------- repositories  --------------------
+# docker
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# update package index
+sudo apt-get update
 
 
 
@@ -38,8 +53,13 @@ rm -rf "$TEMP_DIR"
 sudo apt install -y zsh
 sudo chsh -s $(which zsh)
 
-# instal oh my zsh
+# install oh my zsh
 curl -L https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash
+
+# install zsh plugins
+git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
 
 # install powerlevel10k fonts
 POWERLEVEL10K_FONT_URLS=(
@@ -71,10 +91,16 @@ curl -L https://raw.githubusercontent.com/dm432/vim/main/install.sh | bash
 
 
 # -------------------- other packages --------------------
+# docker
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
 # install snap, firefox and refresh snap packages
 sudo apt install -y snap
 sudo snap install firefox
 sudo snap refresh
 
 
-# TODO apply fonts to terminal
+
+# -------------------- print some information for the user --------------------
+echo "All set! Make sure to apply the MesloLGS NF font to your terminal. Otherwise powerlevel10k will not be displayed properly!"
+echo "In order to make zsh your default shell, you need to log out and back in again!"
