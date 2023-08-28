@@ -52,6 +52,9 @@ APPLY_VIM_SETTINGS=$?
 ask_user "Install Oh My Zsh with the Powerlevel10k theme and set as default shell?"
 INSTALL_ZSH=$?
 
+ask_user "Install Vivaldi browser?"
+INSTALL_VIVALDI=$?
+
 # -------------------- make temp directory --------------------
 TEMP_DIR=$(mktemp -d)
 
@@ -162,6 +165,12 @@ fi
 # k9s
 if [ "$INSTALL_K9S" -eq 0 ]; then
   sudo curl -sL https://github.com/derailed/k9s/releases/latest/download/k9s_Linux_amd64.tar.gz | sudo tar xzf - -C /usr/local/bin k9s
+fi
+
+# vivaldi browser
+if [ "$INSTALL_VIVALDI" -eq 0 ]; then
+  curl -L https://downloads.vivaldi.com/snapshot/install-vivaldi.sh -o "$TEMP_DIR/install-vivaldi.sh" 
+  bash "$TEMP_DIR/install-vivaldi.sh" --no-launch
 fi
 
 # -------------------- remove temp directory --------------------
