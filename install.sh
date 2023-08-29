@@ -55,6 +55,9 @@ INSTALL_ZSH=$?
 ask_user "Install The Fuck?"
 INSTALL_THE_FUCK=$?
 
+ask_user "Install Htop?"
+INSTALL_HTOP=$?
+
 ask_user "Install Vivaldi browser?"
 INSTALL_VIVALDI=$?
 
@@ -174,6 +177,11 @@ fi
 # k9s
 if [ "$INSTALL_K9S" -eq 0 ]; then
   sudo curl -sL https://github.com/derailed/k9s/releases/latest/download/k9s_Linux_amd64.tar.gz | sudo tar xzf - -C /usr/local/bin k9s
+fi
+
+#htop
+if [ "$INSTALL_HTOP" -eq 0 ]; then
+  sudo apt install htop
 fi
 
 # vivaldi browser
