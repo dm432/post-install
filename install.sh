@@ -146,7 +146,7 @@ fi
 
 if [ "$INSTALL_THE_FUCK" -eq 0 ]; then
   sudo apt install thefuck
-  echo "eval $(thefuck --alias)" | tee -a ~/.zshrc
+  echo "eval \$(thefuck --alias)" >>~/.zshrc
   source ~/.zshrc
 fi
 
