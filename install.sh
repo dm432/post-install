@@ -52,6 +52,9 @@ APPLY_VIM_SETTINGS=$?
 ask_user "Install Oh My Zsh with the Powerlevel10k theme and set as default shell?"
 INSTALL_ZSH=$?
 
+ask_user "Install The Fuck?"
+INSTALL_THE_FUCK=$?
+
 ask_user "Install Vivaldi browser?"
 INSTALL_VIVALDI=$?
 
@@ -138,6 +141,12 @@ if [ "$INSTALL_ZSH" -eq 0 ]; then
   echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 fi
 
+if [ "$INSTALL_THE_FUCK" -eq 0 ]; then
+  sudo apt install thefuck
+  echo "eval $(thefuck --alias)" | tee -a ~/.zshrc
+  source ~/.zshrc
+fi
+
 # -------------------- vim --------------------
 # install vim and apply settings
 if [ "$APPLY_VIM_SETTINGS" -eq 0 ]; then
@@ -169,7 +178,7 @@ fi
 
 # vivaldi browser
 if [ "$INSTALL_VIVALDI" -eq 0 ]; then
-  curl -L https://downloads.vivaldi.com/snapshot/install-vivaldi.sh -o "$TEMP_DIR/install-vivaldi.sh" 
+  curl -L https://downloads.vivaldi.com/snapshot/install-vivaldi.sh -o "$TEMP_DIR/install-vivaldi.sh"
   bash "$TEMP_DIR/install-vivaldi.sh" --no-launch
 fi
 
