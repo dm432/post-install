@@ -6,6 +6,6 @@ This script is intended to be run on a fresh Kubuntu installation. Other distros
  
 To execute the post install script, just run the following command in your terminal:
 ```bash
-curl -L https://raw.githubusercontent.com/dm432/post-install/main/install.sh | bash
+bash <(curl -L https://raw.githubusercontent.com/dm432/post-install/main/install.sh)
 ```
 - **_Please Note:_** This will overwrite your existing files! Make sure to back them up.
